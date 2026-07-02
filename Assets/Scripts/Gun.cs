@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
+[SerializeField] int Damageamount = 10;
+[SerializeField] ParticleSystem muzzleFlash;
+[SerializeField] Animator animator;
+[SerializeField] GameObject HitVFXPrefab; 
 
 StarterAssetsInputs starterAssetsInputs;
 EnemyHealth enemyHealth;
 
-[SerializeField] int Damageamount = 10;
-[SerializeField] ParticleSystem muzzleFlash;
+const string SHOOT_STRING = "Shoot";
     RaycastHit hit;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -35,6 +38,10 @@ EnemyHealth enemyHealth;
 
             muzzleFlash.Play();
 
+            animator.Play(SHOOT_STRING , 0, 0f );
+            starterAssetsInputs.ShootInput(false);
+            Instantiate(HitVFXPrefab,hit.point, Quaternion.LookRotation(hit.normal));
+
            
                 EnemyHealth enemyHealth = hit.collider.GetComponent<EnemyHealth>();
                 Debug.Log("Hit Enemy");
@@ -46,7 +53,6 @@ EnemyHealth enemyHealth;
                 
             
 
-            starterAssetsInputs.ShootInput(false);
         }
     }
 }
